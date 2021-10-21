@@ -161,6 +161,7 @@ func checkStatus(resp *http.Response) error {
 		fmt.Printf("caller=sdk/push_client.go:158 msg=Logging from forked library status_code=%d error=%s\n", resp.StatusCode, err)
 	}
 	fmt.Printf("caller=sdk/push_client.go:158 msg=Logging from forked library status_code=%d body=%s\n", resp.StatusCode, result)
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(result))
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		return nil
 	}
