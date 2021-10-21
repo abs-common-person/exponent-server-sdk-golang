@@ -155,6 +155,7 @@ func (c *PushClient) publishInternal(messages []PushMessage) ([]PushResponse, er
 }
 
 func checkStatus(resp *http.Response) error {
+	fmt.Printf("caller=push_client.go:158 msg=Logging from forked library status_code=%d body=%s", resp.StatusCode, resp.Body)
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		return nil
 	}
