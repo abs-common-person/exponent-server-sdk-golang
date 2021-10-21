@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"io/ioutil"
 )
 
 const (
@@ -155,7 +156,11 @@ func (c *PushClient) publishInternal(messages []PushMessage) ([]PushResponse, er
 }
 
 func checkStatus(resp *http.Response) error {
-	fmt.Printf("caller=push_client.go:158 msg=Logging from forked library status_code=%d body=%s", resp.StatusCode, resp.Body)
+	result, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("caller=push_client.go:158 msg=Logging from forked library status_code=%d error=%s", resp.StatusCode, err)
+	}
+	fmt.Printf("caller=push_client.go:158 msg=Logging from forked library status_code=%d body=%s", resp.StatusCode, result)
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		return nil
 	}
