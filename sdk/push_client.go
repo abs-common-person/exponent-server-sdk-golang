@@ -159,9 +159,11 @@ func checkStatus(resp *http.Response) error {
 	result, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("caller=sdk/push_client.go:158 msg=Logging from forked library status_code=%d error=%s\n", resp.StatusCode, err)
+	} else {
+		fmt.Printf("caller=sdk/push_client.go:158 msg=Logging from forked library status_code=%d body=%s\n", resp.StatusCode, result)
+		resp.Body = ioutil.NopCloser(bytes.NewBuffer(result))
 	}
-	fmt.Printf("caller=sdk/push_client.go:158 msg=Logging from forked library status_code=%d body=%s\n", resp.StatusCode, result)
-	resp.Body = ioutil.NopCloser(bytes.NewBuffer(result))
+	
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		return nil
 	}
